@@ -1,0 +1,8 @@
+name: compressor_limiter
+compressor:
+  enabled: true
+  threshold_dbfs: -18
+  ratio: 3.0
+limiter:
+  enabled: true
+  ceiling_dbfs: -1.5

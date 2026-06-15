@@ -1,0 +1,5 @@
+name: rnnoise_external
+enabled: true
+binary: rnnoise_demo
+realtime_safe: false
+streaming_binding_required: true

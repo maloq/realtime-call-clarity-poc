@@ -1,0 +1,7 @@
+name: onset_flux
+window_sec: 1.8
+update_ms: 100
+fast_rate_threshold_syllables_per_sec: 5.5
+min_speech_prob: 0.55
+flux_threshold: 0.08
+realtime_safe: true

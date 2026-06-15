@@ -1,0 +1,8 @@
+name: dpdfnet
+enabled: true
+model: dpdfnet2
+onnx_path: null
+algorithmic_latency_ms: 20
+lookahead_ms: 10
+realtime_safe: true
+verbose: false

@@ -1,0 +1,20 @@
+name: denoise_agc
+stages:
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+  - type: denoise
+    name: spectral_gate
+    config: ${denoise}
+  - type: vad
+    name: energy
+    config: ${vad}
+  - type: leveler
+    name: speech_aware_agc
+    config: ${leveler}
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -1.5

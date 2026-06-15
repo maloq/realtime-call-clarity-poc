@@ -1,0 +1,5 @@
+name: dtln_onnx
+enabled: true
+model_path: null
+algorithmic_latency_ms: 32
+realtime_safe: true

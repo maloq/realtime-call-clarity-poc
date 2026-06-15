@@ -1,0 +1,30 @@
+name: dpdfnet_warm_rounded_smooth
+chunk_ms: 10
+max_added_latency_ms: 50
+stages:
+  - type: denoise
+    name: dpdfnet
+    config:
+      enabled: true
+      model: dpdfnet2
+      onnx_path: null
+      algorithmic_latency_ms: 20
+      lookahead_ms: 10
+      realtime_safe: true
+      verbose: false
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+  - type: vad
+    name: energy
+    config: ${vad}
+  - type: tone
+    name: warm_rounded_voice
+    config:
+      mode: warm_smooth
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -1.0

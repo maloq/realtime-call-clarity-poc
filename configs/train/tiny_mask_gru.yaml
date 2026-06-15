@@ -1,0 +1,12 @@
+name: tiny_mask_gru
+epochs: 2
+batch_size: 4
+learning_rate: 0.001
+max_steps: 20
+synthetic_noise:
+  enabled: false
+model:
+  n_fft: 256
+  hop_length: 128
+  hidden_size: 96
+  num_layers: 1

@@ -1,0 +1,3 @@
+name: asr_alignment
+backend: none
+realtime_safe: false

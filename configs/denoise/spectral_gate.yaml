@@ -1,0 +1,15 @@
+name: spectral_gate
+enabled: true
+sample_rate: ${audio.sample_rate}
+frame_ms: 20
+hop_ms: 10
+fft_size: 512
+noise_update:
+  enabled: true
+  vad_threshold: 0.35
+  alpha: 0.98
+gain:
+  min_gain_db: -18
+  max_suppression_db: 18
+  temporal_smoothing: 0.85
+  freq_smoothing_bins: 3

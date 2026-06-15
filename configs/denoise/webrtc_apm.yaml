@@ -1,0 +1,20 @@
+name: webrtc_apm
+enabled: true
+python_module: webrtc_audio_processing
+frame_ms: 10
+algorithmic_latency_ms: 10.0
+noise_suppression:
+  enabled: true
+  level: moderate
+digital_agc:
+  enabled: true
+  mode: adaptive_digital
+  conservative: true
+  target_level_dbfs: -18
+echo_cancellation:
+  enabled: false
+  type: disabled
+vad:
+  enabled: false
+  level: low
+realtime_safe: true

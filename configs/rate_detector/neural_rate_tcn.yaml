@@ -1,0 +1,6 @@
+name: neural_rate_tcn
+checkpoint_path: null
+n_mels: 40
+context_sec: 2.0
+update_ms: 100
+fast_rate_threshold_syllables_per_sec: 5.5

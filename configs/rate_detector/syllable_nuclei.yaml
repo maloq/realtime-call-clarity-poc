@@ -1,0 +1,8 @@
+name: syllable_nuclei
+window_sec: 1.8
+update_ms: 100
+fast_rate_threshold_syllables_per_sec: 5.5
+min_speech_prob: 0.55
+peak_prominence_db: 2.5
+smooth_ms: 70
+realtime_safe: true

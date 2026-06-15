@@ -1,0 +1,22 @@
+name: streaming_wsola
+enabled: true
+target:
+  max_added_latency_ms: 160
+  preferred_buffer_ms: 70
+  hard_buffer_ms: 180
+tempo:
+  min_tempo: 0.90
+  burst_min_tempo: 0.85
+  max_speech_catchup_tempo: 1.06
+  max_silence_catchup_tempo: 3.00
+  smoothing_per_100ms: 0.02
+decision:
+  fast_rate_threshold_syllables_per_sec: 5.5
+  min_confidence: 0.65
+  min_speech_prob: 0.6
+  cooldown_ms: 300
+wsola:
+  frame_ms: 40
+  analysis_hop_ms: 10
+  search_ms: 15
+  crossfade_ms: 8

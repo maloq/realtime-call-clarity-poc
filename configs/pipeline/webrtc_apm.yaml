@@ -1,0 +1,12 @@
+name: webrtc_apm
+chunk_ms: 10
+max_added_latency_ms: 200
+stages:
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+  - type: denoise
+    name: webrtc_apm
+    config: ${denoise}

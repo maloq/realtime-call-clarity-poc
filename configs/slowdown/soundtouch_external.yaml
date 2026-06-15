@@ -1,0 +1,3 @@
+name: soundtouch_external
+binary: soundstretch
+realtime_safe: false

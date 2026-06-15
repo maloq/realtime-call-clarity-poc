@@ -1,0 +1,8 @@
+name: pause_only
+enabled: true
+target:
+  max_added_latency_ms: 160
+  preferred_buffer_ms: 70
+  hard_buffer_ms: 180
+tempo:
+  max_silence_catchup_tempo: 3.0

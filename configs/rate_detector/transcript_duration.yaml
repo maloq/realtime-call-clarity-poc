@@ -1,0 +1,4 @@
+name: transcript_duration
+fast_words_per_sec: 3.2
+fast_chars_per_sec: 16.0
+realtime_safe: false

@@ -1,0 +1,68 @@
+defaults:
+  - data: local_opus_txt
+  - pipeline: denoise_agc
+  - denoise: spectral_gate
+  - vad: energy
+  - leveler: speech_aware_agc
+  - rate_detector: syllable_nuclei
+  - slowdown: streaming_wsola
+  - enhance: strong_online
+  - repair: neural_decrackle
+  - metrics: default
+  - train: tiny_mask_gru
+  - _self_
+
+seed: 1337
+
+input: null
+transcript: null
+output_dir: outputs/default_run
+runs: []
+
+runtime:
+  device: cpu
+  dtype: float32
+  num_workers: 4
+  deterministic: true
+  parallel_eval: false
+  print_file_timing: false
+
+audio:
+  sample_rate: 16000
+  channels: mono
+  chunk_ms: 10
+  output_format: wav
+
+latency:
+  max_added_latency_ms: 200
+  warning_latency_ms: 150
+  measure_wall_clock: true
+  synchronize_gpu_for_timing: false
+  include_algorithmic_latency: true
+  include_slowdown_buffer_latency: true
+
+tracking:
+  backend: none
+  mlflow_uri: null
+  wandb_project: null
+  log_audio_artifacts: true
+
+output:
+  root_dir: outputs
+  save_intermediate_audio: false
+  save_debug_jsonl: true
+  save_plots: true
+
+sample_selector:
+  num_examples: 20
+  random_seed: ${seed}
+
+preprocess:
+  extract_archives: true
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  job_logging:
+    disable_existing_loggers: false

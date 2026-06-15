@@ -1,0 +1,4 @@
+name: silero
+enabled: true
+model_path: null
+threshold: 0.5

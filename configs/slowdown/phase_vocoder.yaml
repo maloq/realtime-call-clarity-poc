@@ -1,0 +1,13 @@
+name: phase_vocoder
+enabled: true
+target:
+  max_added_latency_ms: 160
+  preferred_buffer_ms: 70
+  hard_buffer_ms: 180
+tempo:
+  min_tempo: 0.90
+  max_speech_catchup_tempo: 1.06
+  max_silence_catchup_tempo: 3.00
+stft:
+  n_fft: 512
+  hop_length: 128

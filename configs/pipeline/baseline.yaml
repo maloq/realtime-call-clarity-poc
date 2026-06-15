@@ -1,0 +1,11 @@
+name: baseline
+stages:
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+  - type: denoise
+    name: passthrough
+    config:
+      enabled: true

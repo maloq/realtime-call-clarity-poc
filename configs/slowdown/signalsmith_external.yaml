@@ -1,0 +1,3 @@
+name: signalsmith_external
+binary: signalsmith-stretch
+realtime_safe: false

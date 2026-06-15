@@ -1,0 +1,26 @@
+name: denoise_agc_slowdown
+stages:
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+  - type: denoise
+    name: spectral_gate
+    config: ${denoise}
+  - type: vad
+    name: energy
+    config: ${vad}
+  - type: leveler
+    name: speech_aware_agc
+    config: ${leveler}
+  - type: rate_detector
+    name: syllable_nuclei
+    config: ${rate_detector}
+  - type: slowdown
+    name: streaming_wsola
+    config: ${slowdown}
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -1.5

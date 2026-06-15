@@ -1,0 +1,23 @@
+name: tiny_decrackler
+batch_size: 8
+learning_rate: 0.001
+max_steps: 80
+segment_ms: 256
+clean_dirs:
+  - data/test_data_samples/clean
+crackle_dirs:
+  - data/test_data_samples/crackle_examples
+max_crackle_files: 32
+max_crackle_snippets: 256
+model:
+  channels: 32
+  kernel_size: 5
+  dilations: [1, 2, 4, 8]
+  max_correction: 0.75
+synthetic_crackle:
+  clicks_per_second: 22.0
+  min_amplitude: 0.18
+  max_amplitude: 0.95
+  max_click_ms: 2.0
+  ringing_probability: 0.35
+  noise_floor: 0.003

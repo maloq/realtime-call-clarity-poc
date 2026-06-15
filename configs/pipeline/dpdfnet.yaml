@@ -1,0 +1,7 @@
+name: dpdfnet
+chunk_ms: 10
+max_added_latency_ms: 200
+stages:
+  - type: denoise
+    name: dpdfnet
+    config: ${denoise}

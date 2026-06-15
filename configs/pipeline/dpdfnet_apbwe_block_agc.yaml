@@ -1,0 +1,42 @@
+name: dpdfnet_apbwe_block_agc
+chunk_ms: 10
+max_added_latency_ms: 500
+stages:
+  - type: denoise
+    name: dpdfnet
+    config: ${denoise}
+  - type: bandwidth
+    name: ap_bwe_block
+    config:
+      enabled: true
+      task: 8kto16k
+      cache_dir: data/checkpoints/ap_bwe
+      auto_download: true
+      device: ${runtime.device}
+      hop_ms: 100
+      left_context_ms: 250
+      right_context_ms: 250
+      blend: 1.0
+      algorithmic_latency_ms: 350
+  - type: leveler
+    name: speech_aware_agc
+    config:
+      target_speech_rms_dbfs: -20.0
+      max_boost_db: 15.0
+      max_cut_db: 18.0
+      attack_db_per_sec: 60.0
+      release_db_per_sec: 12.0
+      vad_required: false
+      vad_threshold: 0.55
+      freeze_gain_on_silence: true
+      compressor:
+        enabled: true
+        threshold_dbfs: -22.0
+        ratio: 2.5
+      limiter:
+        enabled: true
+        ceiling_dbfs: -4.0
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -4.0

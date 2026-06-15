@@ -1,0 +1,11 @@
+name: neural_decrackle
+enabled: true
+checkpoint_path: null
+device: auto
+blend: 1.0
+max_frame_correction: 0.35
+model:
+  channels: 32
+  kernel_size: 5
+  dilations: [1, 2, 4, 8]
+  max_correction: 0.75

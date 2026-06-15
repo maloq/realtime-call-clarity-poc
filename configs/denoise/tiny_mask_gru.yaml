@@ -1,0 +1,7 @@
+name: tiny_mask_gru
+enabled: true
+checkpoint_path: null
+n_fft: 256
+hop_length: 128
+hidden_size: 96
+num_layers: 1

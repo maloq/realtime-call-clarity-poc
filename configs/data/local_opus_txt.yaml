@@ -1,0 +1,25 @@
+name: local_opus_txt
+input_dir: null
+cache_dir: data/cache
+manifest_path: null
+extensions: [".opus", ".wav", ".flac", ".mp3", ".ogg", ".m4a"]
+transcript_extension: ".txt"
+max_files: null
+min_duration_sec: null
+shuffle: false
+exclude_recording_ids: []
+clean_reference_glob: null
+metadata_path: null
+selections:
+  - input_dir: data/asr_public_phone_calls_1.tar.gz
+    max_files: 15
+    selection: longest
+    recording_id_prefix: asr_public_phone_calls_1
+  - input_dir: data/asr_calls_2_val.tar.gz
+    max_files: 15
+    selection: longest
+    recording_id_prefix: asr_calls_2_val
+  - input_dir: data/test_data_samples/raw
+    max_files: null
+    selection: all
+    recording_id_prefix: raw

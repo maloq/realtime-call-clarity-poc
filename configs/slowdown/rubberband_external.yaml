@@ -1,0 +1,3 @@
+name: rubberband_external
+binary: rubberband
+realtime_safe: false

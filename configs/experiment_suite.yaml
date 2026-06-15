@@ -1,0 +1,28 @@
+output_dir: outputs/experiment_suite_20260615
+clean_output_dir: true
+run_comparison: true
+input_cache_root: data/cache/inputs
+refresh_inputs: false
+
+presets:
+  - baseline
+  - denoise_agc
+  - denoise_agc_slowdown
+  - receive_baseline
+  - strong_online
+
+common_overrides:
+  - data.selections.0.max_files=16
+  - data.exclude_recording_ids=[asr_public_phone_calls_1_bb103c9bf636]
+  - sample_selector.num_examples=1000000
+  - metrics.no_reference.nisqa.enabled=false
+  - metrics.no_reference.dnsmos.enabled=false
+  - metrics.no_reference.squim.enabled=false
+  - runtime.device=cpu
+  - runtime.parallel_eval=true
+  - runtime.num_workers=4
+  - runtime.print_file_timing=true
+
+per_preset_overrides:
+  baseline:
+    - pipeline.stages.0.config.enabled=false

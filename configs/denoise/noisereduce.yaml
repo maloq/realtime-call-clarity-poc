@@ -1,0 +1,4 @@
+name: noisereduce
+enabled: true
+stationary: false
+realtime_safe: false

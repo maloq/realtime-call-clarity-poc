@@ -1,0 +1,8 @@
+name: decrackle_medium
+enabled: true
+strength: medium
+max_click_duration_ms: 1.8
+detection_threshold: 6.0
+abs_threshold: 0.10
+repair_blend: 0.90
+max_repair_fraction: 0.12
