@@ -1,0 +1,33 @@
+name: dpdfnet_detail_rescue
+enabled: true
+
+denoise:
+  enabled: true
+  model: dpdfnet2
+  onnx_path: null
+  algorithmic_latency_ms: 20
+  lookahead_ms: 10
+  realtime_safe: true
+  verbose: false
+
+rescue:
+  enabled: true
+  speech_prob_threshold: 0.35
+  min_input_rms_dbfs: -58.0
+  consonant_band_hz: [2200.0, 5200.0]
+  presence_band_hz: [1200.0, 3600.0]
+  sibilance_guard_band_hz: [5200.0, 7600.0]
+  max_consonant_restore_mix: 0.22
+  max_presence_restore_mix: 0.10
+  restore_when_wet_loses_db: 5.0
+  onset_boost_mix: 0.04
+  noise_guard_high_band_dbfs: -38.0
+  sibilance_guard_min_dbfs: -92.0
+  sibilance_guard_loss_db: 1.5
+  sibilance_guard_max_reduction: 0.75
+  attack_ms: 6.0
+  release_ms: 80.0
+  dry_delay_compensation_samples: 0
+
+final:
+  ceiling: 0.98

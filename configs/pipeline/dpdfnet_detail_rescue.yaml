@@ -1,0 +1,49 @@
+name: dpdfnet_detail_rescue
+chunk_ms: 10
+max_added_latency_ms: 200
+
+stages:
+  - type: preprocess
+    name: audio_validation
+    config:
+      enabled: true
+      mono: true
+      target_sample_rate: ${audio.sample_rate}
+
+  - type: repair
+    name: dropout_click
+    config:
+      enabled: true
+
+  - type: filter
+    name: dc_highpass
+    config:
+      enabled: true
+      dc_blocker:
+        enabled: true
+        radius: 0.995
+      highpass:
+        enabled: true
+        cutoff_hz: 90.0
+        order: 2
+      presence:
+        enabled: false
+
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+
+  - type: vad
+    name: energy
+    config: ${vad}
+
+  - type: enhance
+    name: dpdfnet_detail_rescue
+    config: ${enhance}
+
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -1.5

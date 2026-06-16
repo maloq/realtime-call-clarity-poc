@@ -10,6 +10,7 @@ from callclarity.config import compose_config
 from callclarity.data.manifests import build_manifest_from_config, write_manifest
 from callclarity.experiments.compare import compare_runs
 from callclarity.experiments.runner import benchmark_latency, make_samples, run_eval, run_file
+from callclarity.experiments.suite import main as experiment_suite_main
 from callclarity.train.crackle_classifier import (
     pseudolabel_crackle_dataset,
     train_crackle_classifier,
@@ -25,6 +26,7 @@ COMMANDS = {
     "preprocess",
     "run-file",
     "eval",
+    "experiment",
     "enhance-eval",
     "compare",
     "benchmark-latency",
@@ -287,6 +289,8 @@ def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv and argv[0] == "enhance-eval":
         return enhance_eval_main(argv[1:])
+    if argv and argv[0] == "experiment":
+        return experiment_suite_main(argv[1:])
     if argv and argv[0] == "train-crackle-classifier":
         return train_crackle_classifier_main(argv[1:])
     if argv and argv[0] == "pseudolabel-crackle":
@@ -312,6 +316,8 @@ def main(argv: list[str] | None = None) -> int:
     elif command == "eval":
         summary = run_eval(cfg, _output_dir(cfg))
         print(OmegaConf.to_yaml(summary))
+    elif command == "experiment":
+        return experiment_suite_main(overrides)
     elif command == "enhance-eval":
         return enhance_eval_main(overrides)
     elif command == "compare":

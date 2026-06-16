@@ -1,0 +1,78 @@
+name: dpdfnet_remaster
+enabled: true
+
+denoise:
+  enabled: true
+  model: dpdfnet2
+  onnx_path: null
+  algorithmic_latency_ms: 20
+  lookahead_ms: 10
+  realtime_safe: true
+  verbose: false
+
+analysis:
+  speech_prob_threshold: 0.35
+  min_active_rms_dbfs: -58.0
+
+leveler:
+  enabled: true
+  target_rms_dbfs: -22.4
+  max_boost_db: 14.0
+  max_cut_db: 8.0
+  attack_ms: 35.0
+  release_ms: 260.0
+  compressor:
+    enabled: true
+    threshold_dbfs: -22.0
+    ratio: 2.2
+    attack_ms: 10.0
+    release_ms: 90.0
+
+tone:
+  highpass_hz: 55.0
+  body_band_hz: [120.0, 720.0]
+  body_boost_db: 5.2
+  mud_guard_dbfs: -18.0
+  lower_presence_band_hz: [850.0, 2400.0]
+  lower_presence_boost_db: -0.8
+  phone_band_hz: [2000.0, 4800.0]
+  phone_cut_db: 7.0
+  phone_dominance_db: 11.0
+  max_phone_cut_db: 10.0
+  deess_band_hz: [5200.0, 7600.0]
+  deess_threshold_dbfs: -47.0
+  max_deess_cut_db: 5.0
+  attack_ms: 25.0
+  release_ms: 220.0
+  phone_attack_ms: 8.0
+  phone_release_ms: 160.0
+  deess_attack_ms: 3.0
+  deess_release_ms: 90.0
+
+exciter:
+  enabled: true
+  source_band_hz: [1000.0, 3400.0]
+  target_band_hz: [4200.0, 7600.0]
+  envelope_lowpass_hz: 65.0
+  drive: 2.4
+  harmonic_mix: 0.72
+  noise_mix: 0.28
+  target_high_relative_to_source_db: -16.0
+  max_high_band_dbfs: -46.0
+  min_gap_db: 2.0
+  full_mix_gap_db: 12.0
+  max_exciter_gain_db: 34.0
+  attack_ms: 8.0
+  release_ms: 120.0
+
+density:
+  enabled: true
+  band_hz: [120.0, 2600.0]
+  detail_lowpass_hz: 2600.0
+  drive: 1.25
+  mix: 0.055
+  disable_above_peak: 0.92
+
+final:
+  dry_wet: 1.0
+  ceiling: 0.98

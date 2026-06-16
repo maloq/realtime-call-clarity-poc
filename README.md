@@ -65,14 +65,16 @@ callclarity preprocess \
 callclarity run-file \
   input=/path/audio.opus \
   transcript=/path/audio.txt \
-  pipeline=denoise_agc_slowdown \
+  pipeline=denoise_agc \
   output_dir=outputs/debug_run
 
 callclarity eval \
   data=local_opus_txt \
   data.input_dir=/path/to/data \
-  pipeline=denoise_agc_slowdown \
+  pipeline=denoise_agc \
   output_dir=outputs/eval_runs/test
+
+callclarity experiment
 
 enhance-eval /path/to/data \
   --preset receive_baseline \
@@ -90,9 +92,14 @@ Processing Module baseline through `webrtc-audio-processing`. It enables receive
 noise suppression and conservative adaptive digital AGC by default; echo cancellation
 stays disabled because these evals do not provide a synchronized playback reference.
 
-`enhance-eval` writes the focused comparison layout by default: top-level `comparison.csv`,
-`report.md`, and `samples/<sample>/<method>.wav`, with detailed per-method runs under
-`_internal/runs/<method>`.
+`callclarity experiment` is the default way to make method-comparison experiments.
+It uses `configs/experiment_suite.yaml` and writes the canonical suite layout:
+top-level `comparison.csv`, `method_audio.csv`, `report.md`, `report.html`, and
+`samples/<sample>/raw.wav` plus one processed WAV per method. Detailed per-method
+runs live under `_internal/runs/<method>`, with compact JSON artifacts under `_internal/`.
+
+`enhance-eval` uses the same comparison layout for ad hoc input directories when you
+want to choose presets from the command line.
 
 Add `--sync-gpu-latency` only when measuring method latency; otherwise GPU timing stays
 unsynchronized for faster metric-focused experiments. Result tables include `method_device`,
@@ -106,7 +113,17 @@ pytest -q
 
 ## Compare Methods
 
-Run multiple evals, then:
+The preferred comparison workflow is:
+
+```bash
+callclarity experiment
+```
+
+Use `callclarity experiment --dry-run` to inspect the configured runs, or
+`callclarity experiment --config configs/experiment_suite.yaml` to pass an explicit
+suite file.
+
+For lower-level manual comparisons, run multiple evals, then:
 
 ```bash
 callclarity compare \
@@ -114,9 +131,10 @@ callclarity compare \
   output_dir=outputs/comparisons/comparison_001
 ```
 
-Comparison output includes `comparison.csv`, `comparison.json`, `report.md`, `report.html`, and metric bar plots.
+Comparison output uses the same suite-style structure: `comparison.csv`,
+`method_audio.csv`, `report.md`, `report.html`, `_internal/`, and `samples/`.
 
-## Outputs
+## Eval Outputs
 
 Every eval writes:
 
@@ -140,6 +158,40 @@ report.html
 
 Samples contain raw and processed WAVs plus `comparison_info.json`.
 
+## Experiment Outputs
+
+`callclarity experiment` writes the suite comparison layout:
+
+```text
+comparison.csv
+method_audio.csv
+samples_index.csv
+README.md
+report.md
+report.html
+samples/
+  <sample>/
+    raw.wav
+    <method>.wav
+    transcript.txt
+    metrics.csv
+_internal/
+  suite_config_resolved.yaml
+  comparison.json
+  samples_index.json
+  runs/
+    <method>/
+      config_resolved.yaml
+      metrics_summary.json
+      metrics_per_file.csv
+      samples/
+  samples/
+    <sample>/
+      info.json
+      metrics.json
+  plots/
+```
+
 ## Implemented Pipelines
 
 - `pipeline=baseline`: decrackle plus passthrough.
@@ -148,7 +200,6 @@ Samples contain raw and processed WAVs plus `comparison_info.json`.
 - `pipeline=webrtc_apm`: decrackle plus optional WebRTC APM noise suppression and digital AGC.
 - `pipeline=receive_baseline`: receive-side validation, dropout/click repair, DC/high-pass cleanup, VAD, spectral gate, codec/BWE hooks, AGC, limiter.
 - `pipeline=denoise_agc`: decrackle, spectral gate, energy VAD, speech-aware AGC, limiter.
-- `pipeline=denoise_agc_slowdown`: decrackle, spectral gate, VAD, AGC, syllable-nuclei rate detector, bounded streaming WSOLA-style slowdown, limiter.
 
 See [docs/receive_side_enhancement.md](docs/receive_side_enhancement.md) for the receive-side audio audit, metric wrappers, guardrails, method tradeoffs, and source links.
 

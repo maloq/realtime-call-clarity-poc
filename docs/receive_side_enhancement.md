@@ -266,7 +266,7 @@ enhance-eval input_dir --preset dpdfnet --out reports/dpdfnet
 enhance-eval input_dir --preset dpdfnet,dpdfnet_decrackle --out reports/dpdfnet
 enhance-eval input_dir --preset webrtc_apm --out reports/webrtc_apm
 enhance-eval input_dir --preset receive_baseline --out reports/receive_baseline
-enhance-eval input_dir --preset receive_baseline,strong_online --out reports/compare
+enhance-eval input_dir --preset receive_baseline,dpdfnet_detail_rescue --out reports/compare
 ```
 
 Each run writes:

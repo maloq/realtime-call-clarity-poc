@@ -1,0 +1,76 @@
+name: adaptive_clarity
+enabled: true
+
+analysis:
+  speech_prob_threshold: 0.35
+  min_active_rms_dbfs: -58.0
+  smoothing_ms: 120.0
+
+filters:
+  highpass:
+    enabled: true
+    cutoff_hz: 80.0
+    order: 2
+
+  static_eq:
+    enabled: true
+    mud_center_hz: 320.0
+    mud_q: 0.9
+    mud_gain_db: -1.0
+    presence_center_hz: 2400.0
+    presence_q: 0.85
+    presence_gain_db: 0.9
+
+  dynamic_demud:
+    enabled: true
+    band_hz: [180.0, 560.0]
+    compare_band_hz: [1200.0, 4200.0]
+    ratio_threshold_db: 5.0
+    max_cut_db: 3.0
+    attack_ms: 15.0
+    release_ms: 180.0
+
+  dynamic_presence:
+    enabled: true
+    band_hz: [1600.0, 3600.0]
+    reference_band_hz: [250.0, 1200.0]
+    missing_threshold_db: 4.0
+    max_boost_db: 2.0
+    attack_ms: 20.0
+    release_ms: 220.0
+    noise_guard_high_band_dbfs: -48.0
+
+  consonant_lift:
+    enabled: true
+    band_hz: [3200.0, 5200.0]
+    max_boost_db: 0.9
+    transient_extra_db: 0.35
+    attack_ms: 6.0
+    release_ms: 100.0
+    only_when_speech: true
+
+  harshness_guard:
+    enabled: true
+    band_hz: [2800.0, 5200.0]
+    threshold_dbfs: -39.0
+    max_cut_db: 5.0
+    attack_ms: 4.0
+    release_ms: 130.0
+
+  deesser:
+    enabled: true
+    band_hz: [5000.0, 7600.0]
+    threshold_dbfs: -52.0
+    max_cut_db: 6.0
+    attack_ms: 3.0
+    release_ms: 100.0
+
+  saturation:
+    enabled: false
+    drive: 1.25
+    mix: 0.0
+    disable_above_peak: 0.92
+
+final:
+  dry_wet: 1.0
+  ceiling: 0.98

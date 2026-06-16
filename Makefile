@@ -10,4 +10,4 @@ format:
 	ruff format src tests
 
 smoke:
-	callclarity eval data.input_dir=tests/fixtures output_dir=outputs/smoke pipeline=denoise_agc_slowdown data.max_files=1
+	callclarity eval data.input_dir=tests/fixtures output_dir=outputs/smoke pipeline=denoise_agc data.max_files=1

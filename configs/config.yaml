@@ -2,11 +2,12 @@ defaults:
   - data: local_opus_txt
   - pipeline: denoise_agc
   - denoise: spectral_gate
+  - filter: adaptive_clarity
   - vad: energy
   - leveler: speech_aware_agc
   - rate_detector: syllable_nuclei
   - slowdown: streaming_wsola
-  - enhance: strong_online
+  - enhance: dpdfnet_detail_rescue
   - repair: neural_decrackle
   - metrics: default
   - train: tiny_mask_gru

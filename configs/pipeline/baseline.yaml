@@ -4,7 +4,7 @@ stages:
     name: decrackle
     config:
       enabled: true
-      strength: mild
+      strength: medium
   - type: denoise
     name: passthrough
     config:

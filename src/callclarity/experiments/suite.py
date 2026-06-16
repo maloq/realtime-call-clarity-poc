@@ -5,30 +5,20 @@ import hashlib
 import json
 import os
 import shutil
-import sys
 from pathlib import Path
 from time import perf_counter
 from typing import Any
 
 from omegaconf import DictConfig, ListConfig, OmegaConf
 
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-SRC_ROOT = REPO_ROOT / "src"
-if str(SRC_ROOT) not in sys.path:
-    sys.path.insert(0, str(SRC_ROOT))
-
-from callclarity.config import compose_config  # noqa: E402
-from callclarity.data.manifests import (  # noqa: E402
-    build_manifest_from_config,
-    read_manifest,
-    write_manifest,
-)
-from callclarity.experiments.compare import compare_runs  # noqa: E402
-from callclarity.experiments.runner import run_eval  # noqa: E402
-from callclarity.utils.files import ensure_dir  # noqa: E402
+from callclarity.config import compose_config
+from callclarity.data.manifests import build_manifest_from_config, read_manifest, write_manifest
+from callclarity.experiments.compare import compare_runs
+from callclarity.experiments.runner import run_eval
+from callclarity.utils.files import ensure_dir
 
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG = REPO_ROOT / "configs" / "experiment_suite.yaml"
 DEFAULT_INPUT_CACHE_ROOT = "data/cache/inputs"
 
@@ -194,7 +184,10 @@ def _load_or_prepare_inputs(
     manifest_path = cache_dir / "manifest.jsonl"
     data_config_path = cache_dir / "data_config_resolved.yaml"
     fingerprint_path = cache_dir / "input_fingerprint.json"
-    data_config_text = OmegaConf.to_yaml(_data_cfg_for_cache(manifest_cfg.data, extracted_cache_dir), resolve=True)
+    data_config_text = OmegaConf.to_yaml(
+        _data_cfg_for_cache(manifest_cfg.data, extracted_cache_dir),
+        resolve=True,
+    )
 
     if not refresh_inputs and manifest_path.exists() and data_config_path.exists():
         cached_data_config = data_config_path.read_text(encoding="utf-8")
@@ -224,6 +217,21 @@ def _load_or_prepare_inputs(
         flush=True,
     )
     return rows
+
+
+def _preset_overrides(
+    common_overrides: list[str],
+    per_preset: dict[str, Any],
+    preset: str,
+    run_dir: Path,
+) -> list[str]:
+    preset_overrides = _list(per_preset.get(preset), f"per_preset_overrides.{preset}")
+    return [
+        *common_overrides,
+        *preset_overrides,
+        f"pipeline={preset}",
+        f"output_dir={_display_path(run_dir)}",
+    ]
 
 
 def run_suite(
@@ -257,13 +265,7 @@ def run_suite(
     if dry_run:
         for preset in presets:
             run_dir = output_dir / "_internal" / "runs" / preset
-            preset_overrides = _list(per_preset.get(preset), f"per_preset_overrides.{preset}")
-            overrides = [
-                *common_overrides,
-                *preset_overrides,
-                f"pipeline={preset}",
-                f"output_dir={_display_path(run_dir)}",
-            ]
+            overrides = _preset_overrides(common_overrides, per_preset, preset, run_dir)
             print(f"[suite:dry-run] {preset}: {' '.join(overrides)}")
         return 0
 
@@ -282,13 +284,7 @@ def run_suite(
 
     for preset in presets:
         run_dir = output_dir / "_internal" / "runs" / preset
-        preset_overrides = _list(per_preset.get(preset), f"per_preset_overrides.{preset}")
-        overrides = [
-            *common_overrides,
-            *preset_overrides,
-            f"pipeline={preset}",
-            f"output_dir={_display_path(run_dir)}",
-        ]
+        overrides = _preset_overrides(common_overrides, per_preset, preset, run_dir)
         print(f"[suite] running {preset} -> {_display_path(run_dir)}", flush=True)
         cfg = compose_config(overrides)
         run_start = perf_counter()
@@ -309,8 +305,9 @@ def run_suite(
     return 0
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: list[str] | None = None, prog: str = "callclarity experiment") -> int:
     parser = argparse.ArgumentParser(
+        prog=prog,
         description="Run the configured call clarity experiment suite.",
     )
     parser.add_argument(
@@ -330,7 +327,3 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
     return run_suite(args.config, dry_run=args.dry_run, refresh_inputs=args.refresh_inputs)
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

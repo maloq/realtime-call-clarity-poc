@@ -6,10 +6,16 @@ refresh_inputs: false
 
 presets:
   - baseline
+  - dpdfnet
+  - dpdfnet_clarity
+  - dpdfnet_naturalize
+  - dpdfnet_remaster
+  - dpdfnet_decrackle
+  - dpdfnet_detail_rescue
+  - dpdfnet_detail_rescue_clarity
+  - dpdfnet_detail_rescue_naturalize
   - denoise_agc
-  - denoise_agc_slowdown
   - receive_baseline
-  - strong_online
 
 common_overrides:
   - data.selections.0.max_files=16
@@ -24,5 +30,20 @@ common_overrides:
   - runtime.print_file_timing=true
 
 per_preset_overrides:
-  baseline:
-    - pipeline.stages.0.config.enabled=false
+  dpdfnet:
+    - denoise=dpdfnet
+  dpdfnet_clarity:
+    - denoise=dpdfnet
+  dpdfnet_naturalize:
+    - denoise=dpdfnet
+  dpdfnet_remaster:
+    - enhance=dpdfnet_remaster
+  dpdfnet_decrackle:
+    - denoise=dpdfnet
+    - pipeline.stages.0.config.strength=medium
+  dpdfnet_detail_rescue:
+    - enhance=dpdfnet_detail_rescue
+  dpdfnet_detail_rescue_clarity:
+    - enhance=dpdfnet_detail_rescue
+  dpdfnet_detail_rescue_naturalize:
+    - enhance=dpdfnet_detail_rescue

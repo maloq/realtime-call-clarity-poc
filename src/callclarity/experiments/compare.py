@@ -80,7 +80,6 @@ def _stage_method_summary(path: Path) -> dict[str, str]:
     summary = {
         "denoise_method": "none",
         "bandwidth_method": "none",
-        "tone_method": "none",
         "vad_method": "none",
         "leveler_method": "none",
         "rate_detector_method": "none",
@@ -99,7 +98,6 @@ def _stage_method_summary(path: Path) -> dict[str, str]:
     stage_names: dict[str, list[str]] = {
         "denoise": [],
         "bandwidth": [],
-        "tone": [],
         "vad": [],
         "leveler": [],
         "rate_detector": [],
@@ -116,9 +114,6 @@ def _stage_method_summary(path: Path) -> dict[str, str]:
             stage_names[stage_type].append(stage_name)
         if stage_type == "enhance":
             stage_names["denoise"].append(stage_name)
-            if stage_name.startswith("strong_online"):
-                stage_names["vad"].append(stage_name)
-                stage_names["leveler"].append(stage_name)
     for stage_type, names in stage_names.items():
         key = f"{stage_type}_method"
         if names:

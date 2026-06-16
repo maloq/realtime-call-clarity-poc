@@ -1,0 +1,116 @@
+name: dpdfnet_naturalize
+chunk_ms: 10
+max_added_latency_ms: 200
+
+stages:
+  - type: preprocess
+    name: audio_validation
+    config:
+      enabled: true
+      mono: true
+      target_sample_rate: ${audio.sample_rate}
+
+  - type: repair
+    name: dropout_click
+    config:
+      enabled: true
+
+  - type: filter
+    name: dc_highpass
+    config:
+      enabled: true
+      dc_blocker:
+        enabled: true
+        radius: 0.995
+      highpass:
+        enabled: true
+        cutoff_hz: 90.0
+        order: 2
+      presence:
+        enabled: false
+
+  - type: repair
+    name: decrackle
+    config:
+      enabled: true
+      strength: mild
+
+  - type: vad
+    name: energy
+    config: ${vad}
+
+  - type: denoise
+    name: dpdfnet
+    config: ${denoise}
+
+  - type: filter
+    name: dpdfnet_naturalize
+    config:
+      enabled: true
+      analysis:
+        speech_prob_threshold: 0.35
+        min_active_rms_dbfs: -58.0
+      filters:
+        highpass:
+          enabled: true
+          cutoff_hz: 65.0
+          order: 2
+        body:
+          enabled: true
+          band_hz: [140.0, 420.0]
+          reference_band_hz: [900.0, 2400.0]
+          base_boost_db: 1.6
+          max_boost_db: 3.2
+          thinness_threshold_db: 5.0
+          attack_ms: 30.0
+          release_ms: 240.0
+        lower_presence:
+          enabled: true
+          band_hz: [850.0, 2200.0]
+          reference_band_hz: [180.0, 900.0]
+          base_boost_db: 0.6
+          max_boost_db: 1.5
+          missing_threshold_db: 3.0
+          attack_ms: 35.0
+          release_ms: 260.0
+        phone_soften:
+          enabled: true
+          band_hz: [2400.0, 4200.0]
+          reference_band_hz: [140.0, 1200.0]
+          base_cut_db: 0.5
+          dominance_threshold_db: 8.0
+          max_cut_db: 2.4
+          attack_ms: 12.0
+          release_ms: 180.0
+        metal_smoother:
+          enabled: true
+          band_hz: [3600.0, 7600.0]
+          floor_dbfs: -90.0
+          base_cut_db: 0.9
+          threshold_dbfs: -62.0
+          max_cut_db: 3.0
+          attack_ms: 8.0
+          release_ms: 160.0
+        deesser:
+          enabled: true
+          band_hz: [5200.0, 7600.0]
+          threshold_dbfs: -58.0
+          max_cut_db: 3.0
+          attack_ms: 4.0
+          release_ms: 110.0
+        density:
+          enabled: true
+          band_hz: [120.0, 2400.0]
+          detail_lowpass_hz: 2600.0
+          drive: 1.15
+          mix: 0.025
+          disable_above_peak: 0.92
+      final:
+        dry_wet: 1.0
+        output_gain_db: 0.0
+        ceiling: 0.98
+
+  - type: limiter
+    name: limiter
+    config:
+      ceiling_dbfs: -1.5
