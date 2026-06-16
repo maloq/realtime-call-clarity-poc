@@ -13,6 +13,14 @@ from scipy.io import wavfile
 from callclarity.types import MethodUnavailable
 
 
+_LOCAL_TEMP_ROOT = Path(__file__).resolve().parents[3] / "data" / "cache" / "tmp"
+
+
+def _local_temp_root() -> Path:
+    _LOCAL_TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+    return _LOCAL_TEMP_ROOT
+
+
 def _as_float_tensor(array: np.ndarray) -> torch.Tensor:
     if array.dtype.kind in {"i", "u"}:
         info = np.iinfo(array.dtype)
@@ -120,7 +128,7 @@ def load_audio(
 
     if shutil.which("ffmpeg"):
         try:
-            with tempfile.TemporaryDirectory() as tmp:
+            with tempfile.TemporaryDirectory(prefix="audio-decode-", dir=_local_temp_root()) as tmp:
                 wav_path = Path(tmp) / "decoded.wav"
                 cmd = [
                     "ffmpeg",

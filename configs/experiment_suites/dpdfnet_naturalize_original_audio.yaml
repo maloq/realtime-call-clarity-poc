@@ -1,0 +1,34 @@
+output_dir: outputs/experiment_suite_dpdfnet_naturalize_original_audio
+clean_output_dir: true
+run_comparison: true
+input_cache_root: data/cache/inputs
+refresh_inputs: true
+
+presets:
+  - dpdfnet
+  - dpdfnet_naturalize
+  - dpdfnet_detail_rescue
+  - dpdfnet_detail_rescue_naturalize
+
+common_overrides:
+  - data.selections=[]
+  - data.input_dir=data/test_data_samples/raw
+  - data.max_files=1
+  - sample_selector.num_examples=1000000
+  - metrics.no_reference.nisqa.enabled=false
+  - metrics.no_reference.dnsmos.enabled=false
+  - metrics.no_reference.squim.enabled=false
+  - runtime.device=cpu
+  - runtime.parallel_eval=false
+  - runtime.num_workers=1
+  - runtime.print_file_timing=true
+
+per_preset_overrides:
+  dpdfnet:
+    - denoise=dpdfnet
+  dpdfnet_naturalize:
+    - denoise=dpdfnet
+  dpdfnet_detail_rescue:
+    - enhance=dpdfnet_detail_rescue
+  dpdfnet_detail_rescue_naturalize:
+    - enhance=dpdfnet_detail_rescue
